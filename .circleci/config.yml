@@ -6,17 +6,35 @@ executors:
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
+      VSTEST_BUILD_TRACE: 1
 jobs:
-  build-test:
+  test-default:
     executor: dotnet
     steps:
       - checkout
       - run: dotnet build -c Debug
-      - run: dotnet test -c Debug "--logger:Console;verbosity=minimal" < /dev/null
+      - run: dotnet test -c Debug "--logger:Console;verbosity=minimal" --diag:./bin/default/log.txt
+      - store_artifacts:
+          path: ./bin/default
+          when: always
+  test-fix:
+    executor: dotnet
+    steps:
+      - checkout
+      - run: dotnet build -c Debug
+      - run: dotnet test -c Debug "--logger:Console;verbosity=minimal" --diag:./bin/fix/log.txt < /dev/null
+      - store_artifacts:
+          path: ./bin/fix
+          when: always
+
 workflows:
   build-and-push:
     jobs:
-      - build-test:
+      - test-default:
+          filters:
+            tags:
+              only: /.*/
+      - test-fix:
           filters:
             tags:
               only: /.*/
