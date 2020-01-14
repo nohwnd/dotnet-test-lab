@@ -22,7 +22,7 @@ jobs:
     steps:
       - checkout
       - run: dotnet build -c Debug
-      - run: dotnet test -c Debug "--logger:Console;verbosity=minimal" --diag:./bin/fix/log.txt < /dev/null
+      - run: dotnet test -c Debug --diag:./bin/fix/log.txt < /dev/null
       - store_artifacts:
           path: ./bin/fix
           when: always
