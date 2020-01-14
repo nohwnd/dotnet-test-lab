@@ -6,14 +6,13 @@ executors:
     environment:
       DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
       NUGET_XMLDOC_MODE: skip
-      BUILD_CONFIG: Debug
 jobs:
   build-test:
     executor: dotnet
     steps:
       - checkout
       - run: dotnet build -c Debug
-      - run: dotnet test -c Debug
+      - run: dotnet test -c Debug "--logger:Console;verbosity=normal"
 workflows:
   build-and-push:
     jobs:
