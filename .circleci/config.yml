@@ -12,7 +12,7 @@ jobs:
     steps:
       - checkout
       - run: dotnet build -c Debug
-      - run: dotnet test -c Debug "--logger:Console;verbosity=normal"
+      - run: dotnet test -c Debug "--logger:Console;verbosity=minimal" < /dev/null
 workflows:
   build-and-push:
     jobs:
